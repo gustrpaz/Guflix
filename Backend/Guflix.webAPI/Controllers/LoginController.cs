@@ -1,5 +1,6 @@
 ﻿using Guflix.webAPI.Domains;
 using Guflix.webAPI.Interfaces;
+using Guflix.webAPI.Repositories;
 using Guflix.webAPI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -8,17 +9,19 @@ using System.Security.Claims;
 
 namespace Guflix.webAPI.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IUsuarioRepository _usuarioRepository;
+        private IUsuarioRepository _usuarioRepository { get; set; }
 
-        public LoginController (IUsuarioRepository ctx)
+        public LoginController ()
         {
-            _usuarioRepository = ctx;
+            _usuarioRepository = new UsuarioRepository();
         }
 
+        [HttpPost]
         public IActionResult Login(LoginViewModel UsuarioLogin)
         {
             try
@@ -35,7 +38,7 @@ namespace Guflix.webAPI.Controllers
 
                 };
 
-                var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("guflix-token-autenticacao"));
+                var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("gustavoflix-token-para-autenticacao"));
 
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

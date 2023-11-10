@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,11 +51,12 @@ builder.Services.AddAuthentication(options =>
                ValidateIssuer = true,
                ValidateAudience = true,
                ValidateLifetime = true,
-               IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("guflix-token-autenticacao")),
+               IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("gustavoflix-token-para-autenticacao")),
                ClockSkew = TimeSpan.FromMinutes(30),
                ValidIssuer = "GUFLIX_API",
-               ValidAudience = "GUFLIX_API"
-            };
+               ValidAudience = "GUFLIX_API",
+               
+       };
   });
 
 var app = builder.Build();
@@ -74,9 +76,12 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
     c.DocumentTitle = "Guflix WebAPI";
 });
-
 app.UseCors("CorsPolicy");
 
 app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();
