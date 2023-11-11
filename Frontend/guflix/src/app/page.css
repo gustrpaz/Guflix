@@ -1,4 +1,3 @@
-
 .Form{
   width: 10em;
   height: 10em;
@@ -6,4 +5,10 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+.btn{
+  background: none;
+  border: none;
+  cursor: pointer;
 }
