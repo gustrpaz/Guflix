@@ -3,6 +3,7 @@ import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
 import Image from 'next/image'
 import Trash from "../../assets/Trash.png"
+import { useRouter } from 'next/navigation'
 interface Filme {
   idFilme: number,
   genero: string,
@@ -16,6 +17,17 @@ export default function Filme() {
   const [novoNomeGenero, setNovoNomeGenero] = useState('');
   const [filmeSelecionado, setFilmeSelecionado] = useState<number | undefined>(undefined);
 
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      return !!token;
+    };
+    if (!checkAuth()) {
+      router.replace('/login');
+      console.log('Não está logado', localStorage.getItem('token'))
+    }
+  },);
+  
   async function ListarFilmes() {
     try {
       const Resposta = await api.get('/Filmes');
@@ -62,6 +74,7 @@ export default function Filme() {
   useEffect(() => {
     ListarFilmes();
   }, []);
+  const router = useRouter();
   return (
     <>
       <input

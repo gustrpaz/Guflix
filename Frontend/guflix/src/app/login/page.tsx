@@ -21,6 +21,7 @@ export default function Login() {
       const response = await api.post('/login', user);
       console.log(`token= ${response.data.token}`)
       router.push('/filme')
+      localStorage.setItem('token', response.data.token);
     } catch (error) {
       alert('Senha incorreta!')
       console.error('Erro ao fazer a requisição:', error);
@@ -44,6 +45,7 @@ export default function Login() {
           </div>
         </div>
       </form>
+      <Link href={'/'}>Criar conta</Link>
     </main>
   )
 }

@@ -1,23 +1,27 @@
-"use client";
-import './page.css'
-import Image from 'next/image'
-import { api } from "../lib/api"
+'use client'
+import './page.css';
+import { api } from '../lib/api';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation'
+
 interface UserData {
   userName: string;
   email: string;
   passwd: string;
 }
+
 async function cadastrar(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
   const userName = (event.target as any).userName.value;
   const email = (event.target as any).email.value;
   const passwd = (event.target as any).password.value;
+
   try {
     const userData: UserData = {
       userName,
       email,
-      passwd
+      passwd,
     };
     await api.post('/usuarios', userData);
     console.log('Usuário criado com sucesso');
@@ -25,7 +29,20 @@ async function cadastrar(event: React.FormEvent<HTMLFormElement>) {
     console.error('Erro ao fazer a requisição:', error);
   }
 }
+
 export default function Home() {
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      return !token;
+    };
+
+    if (!checkAuth()) {
+      router.push('/filme');
+    }
+  },);
+
+  const router = useRouter();
   return (
     <main>
       <form onSubmit={cadastrar}>
@@ -43,12 +60,11 @@ export default function Home() {
             <input type="password" id="password" name="password" />
           </div>
           <div>
-            <Link href='/login'>
-              <button type="submit">CADASTRAR</button>
-            </Link>
+            <button type="submit">CADASTRAR</button>
           </div>
         </div>
       </form>
+      <Link href={'/login'}>Já tenho conta</Link>
     </main>
-  )
+  );
 }
