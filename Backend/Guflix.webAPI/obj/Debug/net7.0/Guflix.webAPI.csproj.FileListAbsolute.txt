@@ -97,3 +97,4 @@ D:\Senai\Meus Projetos\Guflix\Backend\Guflix.webAPI\bin\Debug\net7.0\NSwag.Core.
 D:\Senai\Meus Projetos\Guflix\Backend\Guflix.webAPI\bin\Debug\net7.0\NSwag.Generation.dll
 D:\Senai\Meus Projetos\Guflix\Backend\Guflix.webAPI\bin\Debug\net7.0\NSwag.Generation.AspNetCore.dll
 D:\Senai\Meus Projetos\Guflix\Backend\Guflix.webAPI\bin\Debug\net7.0\YamlDotNet.dll
+D:\Senai\Meus Projetos\Guflix\Backend\Guflix.webAPI\obj\Debug\net7.0\Guflix.webAPI.sourcelink.json

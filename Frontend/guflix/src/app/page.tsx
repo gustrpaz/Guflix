@@ -46,25 +46,26 @@ export default function Home() {
   return (
     <main>
       <form onSubmit={cadastrar}>
-        <div className="Form">
-          <div>
+        <h1><u>Cadastro</u></h1>
+        <div className='form-content'>
+          <div className="form">
             <label htmlFor="userName">Nome</label>
             <input type="text" id="userName" name="userName" />
           </div>
-          <div>
+          <div className="form">
             <label htmlFor="email">E-mail</label>
             <input type="email" id="email" name="email" />
           </div>
-          <div>
+          <div className="form">
             <label htmlFor="password">Senha</label>
             <input type="password" id="password" name="password" />
           </div>
           <div>
-            <button type="submit">CADASTRAR</button>
+            <button className="btn" type="submit">CADASTRAR</button>
           </div>
+          <Link href={'/login'}><u>Já tenho conta</u></Link>
         </div>
       </form>
-      <Link href={'/login'}>Já tenho conta</Link>
     </main>
   );
 }

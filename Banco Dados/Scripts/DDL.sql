@@ -17,3 +17,6 @@ NomeFilme VARCHAR(70),
 Genero VARCHAR(70)
 )
 GO
+
+SELECT * FROM Usuario
+

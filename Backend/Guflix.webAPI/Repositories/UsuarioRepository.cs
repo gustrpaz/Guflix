@@ -74,7 +74,8 @@ namespace Guflix.webAPI.Repositories
             {
                 IdUser = u.IdUser,
                 Email = u.Email,
-                Passwd = u.Passwd
+                UserName = u.UserName,
+                //Passwd = u.Passwd
             }).ToList();
         }
         /// <summary>

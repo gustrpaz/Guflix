@@ -1,13 +1,14 @@
 "use client"
 import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
-import Image from 'next/image'
-import Trash from "../../assets/Trash.png"
 import { useRouter } from 'next/navigation'
+import Trash from "../../assets/Trash.png"
+import Image from "next/image";
+import './filme.css'
 interface Filme {
   idFilme: number,
-  genero: string,
   nomeFilme: string
+  genero: string,
 }
 export default function Filme() {
   const [filmes, setFilmes] = useState<Filme[]>([]);
@@ -16,7 +17,7 @@ export default function Filme() {
   const [nomeGenero, setNomeGenero] = useState('');
   const [novoNomeGenero, setNovoNomeGenero] = useState('');
   const [filmeSelecionado, setFilmeSelecionado] = useState<number | undefined>(undefined);
-
+ 
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem('token');
@@ -26,8 +27,8 @@ export default function Filme() {
       router.replace('/login');
       console.log('Não está logado', localStorage.getItem('token'))
     }
-  },);
-  
+  });
+
   async function ListarFilmes() {
     try {
       const Resposta = await api.get('/Filmes');
@@ -53,19 +54,23 @@ export default function Filme() {
       };
       await api.post('/Filmes', FilmeData);
       ListarFilmes();
+      setNomeFilme('');
+      setNomeGenero('');
     }
     catch (erro) {
       console.error('Erro ao fazer requisição', erro);
     }
   }
-  async function AtualizarFilme(idFilme: number, nomeFilme: string, nomeGenero: string) {
+  async function AtualizarFilme(idFilme: number, nomeFilme: string, novoNomeGenero: string) {
     try {
       const FilmeAtualizado = {
         nomeFilme: nomeFilme,
-        nomeGenero: nomeGenero,
+        genero: novoNomeGenero,
       };
       await api.put(`/Filmes/${idFilme}`, FilmeAtualizado);
       ListarFilmes();
+      setNovoNomeFilme('');
+      setNovoNomeGenero('');
     }
     catch (erro) {
       console.error('Erro ao fazer requisição', erro)
@@ -76,85 +81,89 @@ export default function Filme() {
   }, []);
   const router = useRouter();
   return (
-    <>
-      <input
-        type="text"
-        placeholder="Digite o nome"
-        value={nomeFilme}
-        onChange={(f) => setNomeFilme(f.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Digite o gênero"
-        value={nomeGenero}
-        onChange={(f) => setNomeGenero(f.target.value)}
-      />
-      <button onClick={() => CadastrarFilmes(nomeFilme, nomeGenero)}>Cadastrar</button>
-      <table>
-        <thead>
-          <tr>
-            <th colSpan={2}>FILMES</th>
-          </tr>
-          <tr>
-            <th>Nome</th>
-            <th>Gênero</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filmes.map((filme) => (
-            <tr key={filme.idFilme}>
-              <td>{filme.nomeFilme}</td>
-              <td>{filme.genero}</td>
-              <td>
-                <button className='btn' onClick={() => DeletarFilme(filme.idFilme)}>
-                  <Image src={Trash} width={21} height={21} alt='Apagar' />
-                </button>
-              </td>
+      <div className="content-film">
+        <form>
+          <input
+            type="text"
+            placeholder="Filme"
+            value={nomeFilme}
+            onChange={(f) => setNomeFilme(f.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Gênero"
+            value={nomeGenero}
+            onChange={(f) => setNomeGenero(f.target.value)}
+          />
+          <button className="btn" onClick={(event) => {
+            event.preventDefault()
+            CadastrarFilmes(nomeFilme, nomeGenero);}}>CADASTRAR</button>
+        </form>
+        <table>
+          <thead>
+            <tr>
+              <th colSpan={4}>FILMES</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <form>
-        <div>
-          <select
-            name="filme"
-            id="filme"
-            value={filmeSelecionado !== undefined ? String(filmeSelecionado) : ''}
-            onChange={(e) => setFilmeSelecionado(e.target.value !== '' ? Number(e.target.value) : undefined)}
-          >
-            <option value="">Selecione o filme</option>
-            {filmes.map((f) => (
-              <option key={f.idFilme} value={f.idFilme}>
-                {f.nomeFilme}
-              </option>
+            <tr>
+              <th>NOME</th>
+              <th>GÊNERO</th>
+              <th>EXCLUIR</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filmes.map((filme) => (
+              <tr key={filme.idFilme}>
+                <td>{filme.nomeFilme}</td>
+                <td>{filme.genero}</td>
+                <td>
+                  <button className='trash' onClick={() => DeletarFilme(filme.idFilme)}>
+                    <Image src={Trash} width={21} height={21} alt='Apagar' />
+                  </button>
+                </td>
+              </tr>
             ))}
-          </select>
-        </div>
-        <div>
-          <input
-            type="text"
-            id="filmeInput"
-            placeholder="Novo filme"
-            value={novoNomeFilme}
-            onChange={(e) => setNovoNomeFilme(e.target.value)}></input>
-        </div>
-        <div>
-          <input
-            type="text"
-            id="generoInput"
-            placeholder="Novo Gênero"
-            value={novoNomeGenero}
-            onChange={(e) => setNovoNomeGenero(e.target.value)}></input>
-        </div>
-        <div>
-          <button
-            onClick={(event) => {
-              event.preventDefault();
-              filmeSelecionado !== undefined && AtualizarFilme(filmeSelecionado, novoNomeFilme, novoNomeGenero)
-            }}>ATUALIZAR</button>
-        </div>
-      </form>
-    </>
+          </tbody>
+        </table>
+        <form>
+          <div>
+            <select
+              name="filme"
+              id="filme"
+              value={filmeSelecionado !== undefined ? String(filmeSelecionado) : ''}
+              onChange={(e) => setFilmeSelecionado(e.target.value !== '' ? Number(e.target.value) : undefined)}
+            >
+              <option value="">Selecionar filme</option>
+              {filmes.map((f) => (
+                <option key={f.idFilme} value={f.idFilme}>
+                  {f.nomeFilme}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <input
+              type="text"
+              id="filmeInput"
+              placeholder="Novo filme"
+              value={novoNomeFilme}
+              onChange={(e) => setNovoNomeFilme(e.target.value)}></input>
+          </div>
+          <div>
+            <input
+              type="text"
+              id="generoInput"
+              placeholder="Novo Gênero"
+              value={novoNomeGenero}
+              onChange={(e) => setNovoNomeGenero(e.target.value)}></input>
+          </div>
+          <div>
+            <button className="btn"
+              onClick={(event) => {
+                event.preventDefault();
+                filmeSelecionado !== undefined && AtualizarFilme(filmeSelecionado, novoNomeFilme, novoNomeGenero)
+              }}>ATUALIZAR</button>
+          </div>
+        </form>
+      </div >
   )
 }

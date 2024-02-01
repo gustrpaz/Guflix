@@ -1,14 +1,54 @@
-.Form{
-  width: 10em;
-  height: 10em;
+@import url("globals.css");
+
+form {
+  height: 80vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 3rem;
+}
+
+.form-content {
+  width: 24em;
+  height: 25em;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  border-color: var(--red);
+  border-style: solid;
+  border-width: 2px;
+  padding: 1rem;
+}
+
+.login{
+  height: 20em;
+}
+
+.form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: left;
 }
 
-.btn{
-  background: none;
-  border: none;
-  cursor: pointer;
+label {
+  padding-bottom: 0.5rem;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+button {
+  margin-top: 1rem;
+}
+
+h1{
+  color: white;
+  font-size: 1.8em;
+  margin-bottom: 2rem;
 }
